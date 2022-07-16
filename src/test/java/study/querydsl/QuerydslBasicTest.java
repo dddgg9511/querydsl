@@ -471,4 +471,35 @@ public class QuerydslBasicTest {
 
         }
     }
+    
+    @Test
+    public void simpleProjection(){
+        List<String> result = queryFactory
+                .select(member.username)
+                .from(member)
+                .fetch();
+        for (String s : result) {
+            System.out.println("s = " + s);
+        }
+    }
+    
+    @Test
+    public void tupleProjection(){
+        List<Tuple> result = queryFactory
+                .select(member.username, member.age)
+                .from(member)
+                .fetch();
+
+        for (Tuple tuple : result) {
+            String username = tuple.get(member.username);
+            Integer age = tuple.get(member.age);
+            System.out.println("username = " + username);
+            System.out.println("age = " + age);
+        }
+
+        /**
+         * Tuple은 qeuryDsl package에 포함되어 있기 때문에 의존성 관리를 위해 repository 에서만 사용하는 것이 좋다.
+         * service에서는 querydsl 사용여부를 알 필요가 없음
+         */
+    }
 }
